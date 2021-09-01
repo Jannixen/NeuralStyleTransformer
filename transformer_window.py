@@ -12,6 +12,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
+from kivy.uix.slider import Slider
 
 from model import NeuralStyleTransformerModel
 
@@ -25,6 +26,7 @@ class NeuralStyleTransformerApp(App):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.bottom_layout = BoxLayout(size_hint=(1, None), height=50)
+        self.menu_layout = BoxLayout(size_hint=(1, None), height=50)
         self.display_layout = GridLayout(cols=3, padding=50)
         self.title_layout = BoxLayout(size_hint=(1, None), height=50)
         self.style_image = Image(source=INITIAL_STYLE_IMAGE, width=300, height=300)
@@ -70,24 +72,31 @@ class NeuralStyleTransformerApp(App):
             single_dropdown_btn.bind(on_release=lambda btn: style_dropdown.select(btn.text))
             style_dropdown.add_widget(single_dropdown_btn)
 
+        return style_dropdown
+
+    def build_menu_layout(self):
+        image_chooser_button = Button(text='Choose image', size_hint=(1, 1),
+                                      on_release=self.choose_image)
+
+        style_dropdown = self.build_style_dropdown()
         style_dropdown_button = Button(text='Choose style', size_hint=(1, 1))
         style_dropdown_button.bind(on_release=style_dropdown.open)
         style_dropdown.bind(on_select=lambda instance, x: setattr(style_dropdown_button, 'text', x))
-        return style_dropdown_button
 
-    def build_title_layout(self):
-        title_label = Label(text='Neural Style Transformer', height=50, font_size='30sp')
-        self.title_layout.add_widget(title_label)
+        output_image_size_slider = Slider(min=50, max=1000, value=300)
+        output_image_size_slider_title = Label(text='Output image size:', size_hint=(1, 1))
+        output_image_size_slider_value = Label(text=str(output_image_size_slider.value), size_hint=(1 / 3, 1))
+
+        self.menu_layout.add_widget(image_chooser_button)
+        self.menu_layout.add_widget(style_dropdown_button)
+        self.menu_layout.add_widget(output_image_size_slider_title)
+        self.menu_layout.add_widget(output_image_size_slider)
+        self.menu_layout.add_widget(output_image_size_slider_value)
 
     def build_bottom_layout(self):
-        image_chooser_button = Button(text='Choose image',
-                                      on_press=self.choose_image)
-
         transformation_button = Button(text='Start transformation',
-                                       on_press=self.transform)
+                                       on_release=self.transform)
 
-        self.bottom_layout.add_widget(image_chooser_button)
-        self.bottom_layout.add_widget(self.build_style_dropdown())
         self.bottom_layout.add_widget(transformation_button)
 
     def rebuild_display_layout(self):
@@ -97,18 +106,14 @@ class NeuralStyleTransformerApp(App):
         self.display_layout.add_widget(self.style_image)
 
     def build(self):
-        self.build_title_layout()
+        self.build_menu_layout()
         self.build_bottom_layout()
 
         root = BoxLayout(orientation='vertical')
-        root.add_widget(self.title_layout)
+        root.add_widget(self.menu_layout)
         root.add_widget(self.display_layout)
         root.add_widget(self.bottom_layout)
 
         self.rebuild_display_layout()
 
         return root
-
-
-if __name__ == '__main__':
-    NeuralStyleTransformerApp().run()

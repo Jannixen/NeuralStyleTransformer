@@ -1,7 +1,5 @@
-import matplotlib.pylab as plt
 import tensorflow as tf
 import tensorflow_hub as hub
-from matplotlib import gridspec
 
 
 class NeuralStyleTransformerModel:
@@ -43,22 +41,3 @@ class NeuralStyleTransformerModel:
         img = tf.image.resize(img, image_size, preserve_aspect_ratio=True)
         return img
 
-    @staticmethod
-    def show_n(images, titles=('',)):
-        n = len(images)
-        image_sizes = [image.shape[1] for image in images]
-        w = (image_sizes[0] * 6) // 320
-        plt.figure(figsize=(w * n, w))
-        gs = gridspec.GridSpec(1, n, width_ratios=image_sizes)
-        for i in range(n):
-            plt.subplot(gs[i])
-            plt.imshow(images[i][0], aspect='equal')
-            plt.axis('off')
-            plt.title(titles[i] if len(titles) > i else '')
-        plt.show()
-
-
-content_image_url = "styles/cat.jpg"
-style_image_url = "styles/Mucha.jpg"
-
-NeuralStyleTransformerModel(content_image_url, style_image_url)

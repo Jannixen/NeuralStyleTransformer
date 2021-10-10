@@ -4,9 +4,10 @@
 
 Prosta aplikacja do nauki Kivy stosująca transfer stylu neuronowego do transformacji zdjęcia.
 
-![Interfejs-start](https://github.com/Jannixen/NeuralStyleTransformer/blob/master/pictures/StyleTransfer1.png)
+<img src="https://github.com/Jannixen/NeuralStyleTransformer/blob/master/pictures/StyleTransfer1.png" width=50% height=50%>
 
-![Interfejs-generacja](https://github.com/Jannixen/NeuralStyleTransformer/blob/master/StyleTransfer2.png)
+<img src="https://github.com/Jannixen/NeuralStyleTransformer/blob/master/pictures/StyleTransfer2.png" width=50% height=50%>
+
 
 ## Źródła ##
 

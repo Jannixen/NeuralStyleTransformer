@@ -55,17 +55,17 @@ class NeuralStyleTransformerApp(App):
                                                   style_image_path=self.style_image.source,
                                                   output_image_size=(output_size,
                                                                      output_size))
-        pil_image = transformer.get_stylized_image()
-        self.show_stylized_image_popup(pil_image, output_size)
+        pil_image = transformer.get_generated_image()
+        self.show_generated_image_popup(pil_image, output_size)
 
     @staticmethod
-    def show_stylized_image_popup(pil_image, output_size):
+    def show_generated_image_popup(pil_image, output_size):
         img_bytes = BytesIO()
         pil_image.save(img_bytes, format='PNG')
         img_bytes.seek(0)
         img = CoreImage(BytesIO(img_bytes.read()), ext='png')
 
-        popup = Popup(title='Stylized image',
+        popup = Popup(title='Generated Image',
                       content=Image(texture=img.texture),
                       size_hint=(None, None), size=(output_size + 30, output_size + 30))
         popup.open()
